@@ -27,10 +27,10 @@ app.listen(port, function() {
 
   db.sync()
     .then(function() {
-      db.seed()
+      return db.seed();
     })
     .then(function() {
-      db.getUsers();
+      return db.getUsers();
     })
     .then(function(users) {
       console.log(users);

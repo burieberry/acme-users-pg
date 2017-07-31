@@ -39,9 +39,9 @@ function sync() {
 
 function seed() {
   return Promise.all([
-    createUser({ name: 'Jake the Dog', manager: 'false' }),
-    createUser({ name: 'Finn the Human', manager: 'false' }),
-    createUser({ name: 'Princess Bubblegum', manager: 'true' })
+    createUser({ name: 'Jake the Dog', manager: false }),
+    createUser({ name: 'Finn the Human', manager: false }),
+    createUser({ name: 'Princess Bubblegum', manager: true })
   ])
   .then(function(result) {
     console.log(result);
@@ -58,12 +58,20 @@ function createUser(user) {
   return query(sql, [ user.name, user.manager ])
     .then(function(result) {
       return result.rows[0].id;
-  });
+    });
+}
+
+function getUsers() {
+  return query('SELECT * FROM users', null)
+    .then(function(result) {
+      return result.rows;
+    });
 }
 
 
 module.exports = {
   sync,
   seed,
-  createUser
+  createUser,
+  getUsers
 };
