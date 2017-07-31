@@ -1,7 +1,11 @@
 const express = require('express');
+const nunjucks = require('nunjucks');
 const db = require('./db');
 
 const app = express();
+app.set('view engine', 'html');
+app.engine('html', nunjucks.render)
+nunjucks.configure('views', { noCache: true });
 
 // logging
 app.use(function(req, res, next) {
@@ -12,7 +16,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(req, res, next) {
-  res.send('hello');
+  res.render('index');
 });
 
 app.use(function(err, req, res, next) {
