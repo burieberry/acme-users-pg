@@ -4,11 +4,9 @@
 <h2>Users</h2>
 
 <ul class="list-group">
-  {% for x in users %}
-  <!-- need to use getUser() func -->
+  {% for user in users %}
     <li class="list-group-item">{{ user.name }}</li>
   {% endfor %}
 </ul>
-
 
 {% endblock %}

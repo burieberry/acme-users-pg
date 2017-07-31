@@ -9,11 +9,20 @@ const router = require('express').Router();
 const db = require('../db');
 
 router.get('/', function(req, res, next) {
-  res.render('users', {
-    users: db.getUsers()
+  db.getUser().then(function(users) {
+    res.render('users', { users: users });
+  }).catch(function(err) {
+    next(err);
   });
 });
 
+router.get('/managers', function(req, res, next) {
+  db.getUsers(true).then(function(managers) {
+    res.render('managers', { managers: managers });
+  }).catch(function(err) {
+    next(err);
+  });
+});
 
 
 

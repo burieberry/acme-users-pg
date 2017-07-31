@@ -36,7 +36,7 @@ app.listen(port, function() {
       return db.seed();
     })
     .then(function() {
-      return db.getUsers();
+      return db.getUser();
     })
     .then(function(users) {
       console.log(users);

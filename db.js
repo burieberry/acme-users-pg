@@ -61,8 +61,23 @@ function createUser(user) {
     });
 }
 
-function getUsers() {
+// function getUser(id) {
+//   return query('SELECT * FROM users WHERE users.id = $1', [ id ])
+//     .then(function(result) {
+//       console.log(id, result.rows);
+//       return result.rows[0];
+//     });
+// }
+
+function getUser() {
   return query('SELECT * FROM users', null)
+    .then(function(result) {
+      return result.rows;
+    });
+}
+
+function getUsers(managersOnly) {
+  return query('SELECT * FROM users WHERE users.manager = $1', [ true ])
     .then(function(result) {
       return result.rows;
     });
@@ -72,5 +87,6 @@ module.exports = {
   sync,
   seed,
   createUser,
-  getUsers
+  getUsers,
+  getUser
 };
