@@ -11,7 +11,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-
 app.get('/', function(req, res, next) {
   res.send('hello');
 });
@@ -22,16 +21,18 @@ app.use(function(err, req, res, next) {
 
 
 const port = process.env.PORT || 3000;
+
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
-  db.sync(function(err) {
-    if (err) return console.log(err.message);
-    db.seed(function(err) {
-      if (err) return console.log(err.message);
-      db.getUsers(function(err) {
-        if (err) return console.log(err.message);
-        console.log(db.users);
-      });
+
+  db.sync()
+    .then(function() {
+      db.seed()
+    })
+    .then(function() {
+      db.getUsers();
+    })
+    .then(function(users) {
+      console.log(users);
     });
-  });
 });

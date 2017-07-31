@@ -14,11 +14,16 @@ client.connect(function(err) {
   if (err) console.log(err.message);
 });
 
-function query(sql, params, cb) {
-  client.query(sql, params, cb);
+function query(sql, params) {
+  return new Promise(function(resolve, reject) {
+    client.query(sql, params, function(err, result){
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
 }
 
-function sync(cb) {
+function sync() {
   var sql = `
     DROP TABLE IF EXISTS users;
 
@@ -29,34 +34,30 @@ function sync(cb) {
     );
   `;
 
-  query(sql, null, function(err) {
-    if (err) return cb(err);
-    cb(null);
+  return query(sql);
+}
+
+function seed() {
+  return Promise.all([
+    createUser({ name: 'Jake the Dog', manager: 'false' }),
+    createUser({ name: 'Finn the Human', manager: 'false' }),
+    createUser({ name: 'Princess Bubblegum', manager: 'true' })
+  ])
+  .then(function(result) {
+    console.log(result);
   });
 }
 
-function seed(cb) {
-  createUser({ name: 'Jake the Dog', manager: 'false' }, function(err) {
-    if (err) return cb(err);
-    createUser({ name: 'Finn the Human', manager: 'false' }, function(err) {
-      if (err) return cb(err);
-      createUser({ name: 'Princess Bubblegum', manager: 'true' }, function(err) {
-       if (err) return cb(err);
-      });
-    });
-  });
-}
-
-function createUser(user, cb) {
+function createUser(user) {
   var sql = `
     INSERT INTO users(name, manager)
     VALUES ($1, $2)
     RETURNING id
   `;
 
-  query(sql, [ user.name, user.manager ], function(err, result) {
-    if (err) cb(err);
-    cb(null, result.rows[0].id);
+  return query(sql, [ user.name, user.manager ])
+    .then(function(result) {
+      return result.rows[0].id;
   });
 }
 
