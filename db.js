@@ -14,6 +14,10 @@ client.connect(function(err) {
   if (err) console.log(err.message);
 });
 
+function query(sql, params, cb) {
+  client.query(sql, params, cb);
+}
+
 function sync(cb) {
   var sql = `
     DROP TABLE IF EXISTS users;
@@ -25,7 +29,7 @@ function sync(cb) {
     );
   `;
 
-  client.query(sql, null, function(err) {
+  query(sql, null, function(err) {
     if (err) return cb(err);
     cb(null);
   });
@@ -50,7 +54,7 @@ function createUser(user, cb) {
     RETURNING id
   `;
 
-  client.query(sql, [ user.name, user.manager ], function(err, result) {
+  query(sql, [ user.name, user.manager ], function(err, result) {
     if (err) cb(err);
     cb(null, result.rows[0].id);
   });
