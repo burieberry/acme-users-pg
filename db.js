@@ -43,9 +43,9 @@ function seed() {
     createUser({ name: 'Finn the Human', manager: false }),
     createUser({ name: 'Princess Bubblegum', manager: true })
   ])
-  .then(function(result) {
-    console.log(result);
-  });
+    .then(function(result) {
+      console.log(result);
+    });
 }
 
 function createUser(user) {
@@ -67,7 +67,6 @@ function getUsers() {
       return result.rows;
     });
 }
-
 
 module.exports = {
   sync,

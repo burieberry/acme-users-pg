@@ -19,6 +19,8 @@ app.get('/', function(req, res, next) {
   res.render('index');
 });
 
+app.use('/users', require('./routes/users'));
+
 app.use(function(err, req, res, next) {
   app.render('error', { error: err });
 });
