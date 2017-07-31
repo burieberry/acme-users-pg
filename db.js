@@ -1,8 +1,8 @@
 // To do:
 // sync(cb),  OK
 // seed(cb),  OK
-// getUsers(managersOnly, cb)
-// getUser(id, cb)
+// getUsers(managersOnly, cb) OK
+// getUser(id, cb) OK
 // createUser(user, cb) OK
 // updateUser(user, cb)
 // deleteUser(id, cb)
@@ -61,16 +61,15 @@ function createUser(user) {
     });
 }
 
-// function getUser(id) {
-//   return query('SELECT * FROM users WHERE users.id = $1', [ id ])
-//     .then(function(result) {
-//       console.log(id, result.rows);
-//       return result.rows[0];
-//     });
-// }
+function getUser(id) {
+  if (id) {
+    return query('SELECT * FROM users WHERE users.id = $1', [ id ])
+      .then(function(result) {
+        return result.rows[0];
+      });
+  }
 
-function getUser() {
-  return query('SELECT * FROM users', null)
+  else return query('SELECT * FROM users', null)
     .then(function(result) {
       return result.rows;
     });
@@ -87,6 +86,6 @@ module.exports = {
   sync,
   seed,
   createUser,
-  getUsers,
-  getUser
+  getUser,
+  getUsers
 };
