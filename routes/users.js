@@ -9,7 +9,7 @@ const router = require('express').Router();
 const db = require('../db');
 
 router.get('/', function(req, res, next) {
-  db.getUser().then(function(users) {
+  db.getUsers().then(function(users) {
     res.render('users', { users: users });
   }).catch(function(err) {
     next(err);
@@ -26,10 +26,9 @@ router.get('/managers', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   return db.createUser(req.body)
-    .then(function(managersOnly) {
-      console.log(managersOnly);
-      if (managersOnly) {
-        db.getUser(managersOnly);
+    .then(function() {
+      if (req.body.manager) {
+        db.getUser(req.body.id);
         res.redirect('/users/managers');
       }
       else {

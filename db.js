@@ -62,9 +62,6 @@ function createUser(user) {
     RETURNING id
   `;
 
-  console.log(user);
-  console.log(user.name, user.manager);
-
   return query(sql, [ user.name, user.manager ])
     .then(function(result) {
       console.log(result.rows[0].id);
@@ -73,22 +70,21 @@ function createUser(user) {
 }
 
 function getUser(id) {
-  console.log(id);
-  if (id) {
-    return query('SELECT * FROM users WHERE users.id = $1', [ id ])
-      .then(function(result) {
-        return result.rows[0];
-      });
-  }
-
-  else return query('SELECT * FROM users', null)
+  return query('SELECT * FROM users WHERE users.id = $1', [ id ])
     .then(function(result) {
-      return result.rows;
+      return result.rows[0];
     });
 }
 
 function getUsers(managersOnly) {
-  return query('SELECT * FROM users WHERE users.manager = $1', [ true ])
+  if (managersOnly) {
+    return query('SELECT * FROM users WHERE users.manager = $1', [ true ])
+      .then(function(result) {
+        return result.rows;
+      });
+  }
+
+  else return query('SELECT * FROM users', null)
     .then(function(result) {
       return result.rows;
     });
