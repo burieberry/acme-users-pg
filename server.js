@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const db = require('./db');
 
@@ -7,6 +8,9 @@ app.set('view engine', 'html');
 app.engine('html', nunjucks.render)
 nunjucks.configure('views', { noCache: true });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // logging
 app.use(function(req, res, next) {
   res.on('finish', function() {
@@ -14,6 +18,10 @@ app.use(function(req, res, next) {
   });
   next();
 });
+
+// app.post('/users', function(req, res, next) {
+//   res.json();
+// });
 
 app.get('/', function(req, res, next) {
   res.render('index');

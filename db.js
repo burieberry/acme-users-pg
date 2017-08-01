@@ -49,19 +49,31 @@ function seed() {
 }
 
 function createUser(user) {
+  if (!user.manager) {
+    user.manager = false;
+  }
+  else {
+    user.manager = true;
+  }
+
   var sql = `
     INSERT INTO users(name, manager)
     VALUES ($1, $2)
     RETURNING id
   `;
 
+  console.log(user);
+  console.log(user.name, user.manager);
+
   return query(sql, [ user.name, user.manager ])
     .then(function(result) {
+      console.log(result.rows[0].id);
       return result.rows[0].id;
     });
 }
 
 function getUser(id) {
+  console.log(id);
   if (id) {
     return query('SELECT * FROM users WHERE users.id = $1', [ id ])
       .then(function(result) {

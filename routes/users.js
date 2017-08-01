@@ -24,6 +24,22 @@ router.get('/managers', function(req, res, next) {
   });
 });
 
+router.post('/', function(req, res, next) {
+  return db.createUser(req.body)
+    .then(function(id) {
+      if (id) {
+        db.getUser(id);
+        res.redirect('/users');
+      }
+      else {
+        db.getUser();
+        res.redirect('/users');
+      }
+    })
+    .catch(function(err) {
+      next(err);
+    });
+});
 
 
 module.exports = router;
