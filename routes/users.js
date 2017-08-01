@@ -26,10 +26,11 @@ router.get('/managers', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   return db.createUser(req.body)
-    .then(function(id) {
-      if (id) {
-        db.getUser(id);
-        res.redirect('/users');
+    .then(function(managersOnly) {
+      console.log(managersOnly);
+      if (managersOnly) {
+        db.getUser(managersOnly);
+        res.redirect('/users/managers');
       }
       else {
         db.getUser();
