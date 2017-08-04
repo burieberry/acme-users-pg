@@ -5,7 +5,18 @@
 
 <ul class="list-group">
   {% for user in users %}
-    <li class="list-group-item">{{ user.name }}</li>
+    <li class="list-group-item">
+      {{ user.name }}
+      {% if (user.manager) %}
+        <label class="label label-success">Manager</label>
+      {% else %}
+      <form class="form-inline" action="/users/{{ user.id }}?_method=PUT" method="POST">
+        <input type="hidden" name="manager" value="true">
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <button class="btn btn-primary btn-sm form-control" type="submit">Make Manager</button>
+      </form>
+      {% endif %}
+    </li>
   {% endfor %}
 </ul>
 

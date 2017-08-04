@@ -8,6 +8,7 @@ const db = require('./db');
 const app = express();
 
 app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(require('method-override')('_method'));
 
 app.use(require('morgan')('dev'));  // logging
 

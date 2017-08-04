@@ -8,23 +8,23 @@
 const router = require('express').Router();
 const db = require('../db');
 
-router.get('/', function(req, res, next) {
-  db.getUsers().then(function(users) {
-    res.render('users', { users: users });
-  }).catch(function(err) {
-    next(err);
-  });
+router.get('/', (req, res, next) => {
+  db.getUsers()
+    .then(function(users) {
+      res.render('users', { users: users });
+    })
+    .catch((err) => next(err));
 });
 
-router.get('/managers', function(req, res, next) {
-  db.getUsers(true).then(function(managers) {
-    res.render('managers', { managers: managers });
-  }).catch(function(err) {
-    next(err);
-  });
+router.get('/managers', (req, res, next) => {
+  db.getUsers(true)
+    .then(function(managers) {
+      res.render('managers', { managers: managers });
+    })
+    .catch((err) => next(err));
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', (req, res, next) => {
   return db.createUser(req.body)
     .then(function() {
       if (req.body.manager) {
@@ -36,9 +36,16 @@ router.post('/', function(req, res, next) {
         res.redirect('/users');
       }
     })
-    .catch(function(err) {
-      next(err);
-    });
+    .catch((err) => next(err));
+});
+
+router.put('/:id', (req, res, next) => {
+  console.log(req.body);
+  return db.updateUser(req.body)
+    .then(() => {
+      res.redirect('/users/managers');
+    })
+    .catch((err) => next(err));
 });
 
 module.exports = router;
