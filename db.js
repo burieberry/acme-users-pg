@@ -1,5 +1,4 @@
 // To do:
-// updateUser(user, cb)
 // deleteUser(id, cb)
 
 var pg = require('pg');
@@ -112,11 +111,27 @@ function updateUser(user) {
     });
 }
 
+function deleteUser(user) {
+  var sql = `
+    DELETE FROM users
+    WHERE id = $1
+  `;
+
+  return getUser(user.id)
+    .then(result => {
+      return query(sql, [ result.id ])
+    })
+    .catch((err) => {
+      return console.log(err)
+    });
+}
+
 module.exports = {
   sync,
   seed,
   createUser,
   getUser,
   getUsers,
-  updateUser
+  updateUser,
+  deleteUser
 };

@@ -37,4 +37,10 @@ router.put('/:id', (req, res, next) => {
     .catch(next);
 });
 
+router.delete('/:id', (req, res, next) => {
+  return db.deleteUser(req.body)
+    .then(res.redirect('/users'))
+    .catch(next);
+});
+
 module.exports = router;
