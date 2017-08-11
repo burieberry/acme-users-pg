@@ -4,6 +4,10 @@
 <h2>Managers</h2>
 
   <ul class="list-group">
+  {% if managers.length === 0 %}
+    <p class="alert alert-warning">No managers left.</p>
+  {% endif %}
+
   {% for manager in managers %}
     <li class="list-group-item">
       <p>{{ manager.name }}</p>
