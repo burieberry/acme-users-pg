@@ -9,10 +9,12 @@ client.connect((err) => {
   if (err) console.log(err.message);
 });
 
-function query(sql, params) {
-  return new Promise((resolve, reject) => {
-    client.query(sql, params, (err, result) => {
-      if (err) return reject(err);
+function query(sql, params){
+  return new Promise(function(resolve, reject){
+    client.query(sql, params, function(err, result){
+      if(err){
+        return reject(err);
+      }
       resolve(result);
     });
   });
@@ -29,7 +31,7 @@ function sync() {
     );
   `;
 
-  return query(sql);
+  return query(sql, null);
 }
 
 function seed() {
@@ -55,6 +57,9 @@ function createUser(user) {
   return query(sql, [ user.name, user.manager ])
     .then((result) => {
       return result.rows[0].id;
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 
@@ -62,6 +67,9 @@ function getUser(id) {
   return query('SELECT * FROM users WHERE users.id = $1', [ id ])
     .then((result) => {
       return result.rows[0];
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 
@@ -70,24 +78,38 @@ function getUsers(managersOnly) {
     return query('SELECT * FROM users WHERE users.manager = $1', [ true ])
       .then((result) => {
         return result.rows;
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 
   else return query('SELECT * FROM users', null)
     .then((result) => {
       return result.rows;
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 
 function updateUser(user) {
+  var sql = `
+    UPDATE users
+    SET name = $1, manager = $2
+    WHERE id = $3
+  `;
+
   return getUser(user.id)
-    .then((result) => {
-      return query('UPDATE users SET name = $1, manager = $2  WHERE id = $3', [ result.name, result.manager, result.id ])
+    .then(result => {
+      return query(sql, [ result.name, user.manager, result.id ]);
     })
     .then(() => {
       return getUser(user.id);
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      return console.log(err)
+    });
 }
 
 module.exports = {
