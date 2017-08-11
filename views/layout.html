@@ -13,9 +13,9 @@
   <header>
     <h1>ACME Users PG</h1>
     <ul class="nav nav-tabs">
-      <li><a href="/">Home</a></li>
-      <li><a href="/users">Users</a></li>
-      <li><a href="/users/managers">Managers</a></li>
+      <li {% if path === '/' %} class="active" {% endif %}><a href="/">Home</a></li>
+      <li {% if path === '/users' %} class="active" {% endif %}><a href="/users">Users</a></li>
+      <li {% if path === '/managers' %} class="active" {% endif %}><a href="/users/managers">Managers</a></li>
     </ul>
   </header>
 
