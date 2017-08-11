@@ -38,10 +38,9 @@ function seed() {
     createUser({ name: 'Finn the Human', manager: false }),
     createUser({ name: 'Princess Bubblegum', manager: true })
   ])
-    .then(function(result) {
-      console.log(result);
-    })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 function createUser(user) {
@@ -55,7 +54,6 @@ function createUser(user) {
 
   return query(sql, [ user.name, user.manager ])
     .then((result) => {
-      console.log(result.rows[0].id);
       return result.rows[0].id;
     });
 }
