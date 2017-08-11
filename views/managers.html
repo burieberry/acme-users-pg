@@ -5,7 +5,14 @@
 
   <ul class="list-group">
   {% for manager in managers %}
-    <li class="list-group-item">{{ manager.name }}</li>
+    <li class="list-group-item">
+      <p>{{ manager.name }}</p>
+      <form class="form-inline" action="/users/{{ manager.id }}?_method=PUT" method="POST">
+        <input type="hidden" name="manager" value="false">
+        <input type="hidden" name="id" value="{{ manager.id }}">
+        <button class="btn btn-warning btn-sm form-control">Remove as Manager</button>
+      </form>
+    </li>
   {% endfor %}
   </ul>
 

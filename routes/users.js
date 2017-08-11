@@ -39,7 +39,7 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   return db.deleteUser(req.body)
-    .then(res.redirect('/users'))
+    .then(user => res.redirect('/users'))
     .catch(next);
 });
 
