@@ -40,7 +40,7 @@ app.use('/users', require('./routes/users'));
 
 app.use((req, res, next) => {
   const error = new Error('Page not found.');
-  res.status(404);
+  error.status = 404;
   next(error);
 });
 
