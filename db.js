@@ -1,6 +1,3 @@
-// To do:
-// deleteUser(id, cb)
-
 var pg = require('pg');
 var client = new pg.Client(process.env.DATABASE_URL);
 
